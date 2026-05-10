@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Completo — Daniel Gomes Advocacia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-dark: #1a365d;
+            --primary-med:  #2c5282;
+            --primary-light: #4a7ba7;
+            --neutral-bg:   #f7fafc;
+            --neutral-line: #e2e8f0;
+            --neutral-text: #2d3748;
+            --neutral-light: #718096;
+            --success: #48bb78;
+            --danger:  #c53030;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(160deg, #eef2f7 0%, #e4ecf5 100%);
+            min-height: 100vh;
+            color: var(--neutral-text);
+            line-height: 1.6;
+        }
+
+        /* ===== CABEÇALHO ===== */
+        .site-header {
+            background: var(--primary-dark);
+            padding: 18px 24px;
+            text-align: center;
+        }
+        .site-header .nome {
+            font-family: Georgia, serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .site-header .sub {
+            font-size: 10px;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 3px;
+        }
+
+        /* ===== BARRA DE PROGRESSO (sticky) ===== */
+        .progress-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: white;
+            border-bottom: 1px solid var(--neutral-line);
+            padding: 12px 24px;
+            box-shadow: 0 2px 8px rgba(26,54,93,0.06);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--neutral-light);
+            margin-bottom: 7px;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--neutral-line);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-dark);
+            transition: width 0.4s ease;
+            border-radius: 100px;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 24px 16px 60px;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(26,54,93,0.09);
+            border-left: 5px solid var(--primary-dark);
+        }
+
+        /* ===== ETAPA ===== */
+        .step { display: none; padding: 32px 32px 28px; animation: fadeUp 0.3s ease; }
+        .step.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--primary-light);
+            margin-bottom: 6px;
+        }
+
+        .step h2 {
+            font-family: Georgia, serif;
+            font-size: 20px;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+        }
+
+        .step .instrucao {
+            font-size: 13px;
+            color: var(--neutral-light);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        /* ===== DIVISOR DE SEÇÃO ===== */
+        .secao {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--primary-med);
+            margin: 24px 0 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--neutral-line);
+        }
+
+        /* ===== INPUTS ===== */
+        .campo { margin-bottom: 16px; }
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+        @media (max-width: 520px) {
+            .row-2, .row-3 { grid-template-columns: 1fr; }
+            .step { padding: 24px 20px 20px; }
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--neutral-text);
+            margin-bottom: 5px;
+        }
+
+        label .opc { font-weight: 400; color: var(--neutral-light); font-size: 11px; }
+
+        .ajuda {
+            font-size: 11px;
+            color: var(--neutral-light);
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        select, textarea {
+            width: 100%;
+            padding: 11px 13px;
+            border: 2px solid var(--neutral-line);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            color: var(--neutral-text);
+            background: white;
+            transition: border-color 0.2s;
+            -webkit-appearance: none;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-med);
+            box-shadow: 0 0 0 3px rgba(44,82,130,0.08);
+        }
+
+        input.erro { border-color: var(--danger); }
+
+        textarea { resize: vertical; min-height: 72px; }
+
+        .prefixo-wrap { position: relative; }
+        .prefixo-wrap::before {
+            content: 'R$';
+            position: absolute;
+            left: 13px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--neutral-light);
+            pointer-events: none;
+        }
+        .prefixo-wrap input { padding-left: 36px; }
+
+        /* ===== OPÇÕES RADIO ===== */
+        .opcoes { display: flex; flex-direction: column; gap: 8px; }
+
+        .opcao {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border: 2px solid var(--neutral-line);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.18s;
+            font-size: 13px;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .opcao:hover { border-color: var(--primary-light); }
+
+        .opcao input[type="radio"] { display: none; }
+
+        .opcao .radio-circle {
+            width: 16px; height: 16px;
+            border: 2px solid var(--neutral-line);
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.18s;
+        }
+
+        .opcao.selecionada {
+            border-color: var(--primary-dark);
+            background: #f0f5fb;
+        }
+
+        .opcao.selecionada .radio-circle {
+            border-color: var(--primary-dark);
+            background: var(--primary-dark);
+        }
+
+        .opcao.selecionada .radio-circle::after {
+            content: '';
+            width: 5px; height: 5px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        /* ===== BOTÕES ===== */
+        .botoes { display: flex; gap: 10px; margin-top: 24px; }
+
+        .btn {
+            flex: 1;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .btn-primario { background: var(--primary-dark); color: white; }
+        .btn-primario:hover { background: var(--primary-med); }
+
+        .btn-secundario {
+            background: white;
+            color: var(--neutral-light);
+            border: 2px solid var(--neutral-line);
+            flex: 0 0 auto;
+            padding: 13px 20px;
+        }
+        .btn-secundario:hover { border-color: var(--primary-light); color: var(--primary-dark); }
+
+        /* ===== DOCUMENTOS (etapa 5) ===== */
+        .doc-grupo {
+            background: var(--neutral-bg);
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+            border-left: 3px solid var(--primary-med);
+        }
+
+        .doc-grupo-titulo {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        .doc-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--neutral-text);
+            padding: 5px 0;
+            line-height: 1.5;
+        }
+
+        .doc-item::before {
+            content: '—';
+            color: var(--primary-light);
+            flex-shrink: 0;
+            font-weight: bold;
+            margin-top: 1px;
+        }
+
+        .email-destino {
+            background: var(--primary-dark);
+            color: white;
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .email-destino strong { font-size: 15px; display: block; margin-top: 4px; letter-spacing: 0.3px; }
+
+        .info-box {
+            background: #ebf4ff;
+            border-left: 3px solid var(--primary-light);
+            padding: 13px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--neutral-text);
+            line-height: 1.7;
+            margin: 14px 0;
+        }
+
+        /* ===== SUCESSO ===== */
+        .sucesso-icone {
+            width: 60px; height: 60px;
+            background: #f0fff4;
+            border: 2px solid #c6f6d5;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 26px;
+            color: var(--success);
+        }
+
+        .protocolo-box {
+            background: var(--neutral-bg);
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-size: 12px;
+            color: var(--neutral-text);
+            text-align: center;
+            margin: 16px 0;
+            border: 1px solid var(--neutral-line);
+        }
+
+        .protocolo-box strong { font-size: 16px; color: var(--primary-dark); display: block; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+<!-- CABEÇALHO -->
+<div class="site-header">
+    <div class="nome">Daniel Gomes Advocacia</div>
+    <div class="sub">Cuiabá &nbsp;|&nbsp; Brasília</div>
+</div>
+
+<!-- PROGRESSO STICKY -->
+<div class="progress-wrapper">
+    <div class="progress-info">
+        <span id="stepLabel">Etapa 1 de 5</span>
+        <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container">
+<div class="card">
+
+    <!-- ===== ETAPA 1: DADOS PESSOAIS ===== -->
+    <div class="step active" data-step="1">
+        <div class="step-label">Etapa 1 de 5</div>
+        <h2>Seus dados pessoais</h2>
+        <p class="instrucao">Informações que constarão na petição e no contrato.</p>
+
+        <div class="campo">
+            <label>Nome completo</label>
+            <input type="text" name="nome_autor" placeholder="Conforme documento de identidade">
+        </div>
+
+        <div class="row-2">
+            <div class="campo">
+                <label>CPF</label>
+                <input type="text" name="cpf_autor" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)">
+            </div>
+            <div class="campo">
+                <label>RG <span class="opc">(com órgão emissor)</span></label>
+                <input type="text" name="rg_autor" placeholder="00.000.000-0 SSP/MT">
+            </div>
+        </div>
+
+        <div class="row-2">
+            <div class="campo">
+                <label>E-mail</label>
+                <input type="email" name="email_autor" placeholder="seu@email.com">
+            </div>
+            <div class="campo">
+                <label>WhatsApp</label>
+                <input type="tel" name="telefone" placeholder="(00) 00000-0000" maxlength="15" oninput="mascaraTel(this)">
+            </div>
+        </div>
+
+        <div class="row-3">
+            <div class="campo">
+                <label>Nacionalidade</label>
+                <select name="nacionalidade">
+                    <option value="brasileiro(a)">Brasileiro(a)</option>
+                    <option value="brasileiro(a) naturalizado(a)">Naturalizado(a)</option>
+                    <option value="estrangeiro(a) residente">Estrangeiro residente</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Estado civil</label>
+                <select name="estado_civil">
+                    <option value="">Selecione</option>
+                    <option value="solteiro(a)">Solteiro(a)</option>
+                    <option value="casado(a)">Casado(a)</option>
+                    <option value="divorciado(a)">Divorciado(a)</option>
+                    <option value="viúvo(a)">Viúvo(a)</option>
+                    <option value="em união estável">União Estável</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Profissão</label>
+                <input type="text" name="profissao" placeholder="Ex: engenheiro(a)">
+            </div>
+        </div>
+
+        <div class="campo">
+            <label>Endereço completo</label>
+            <input type="text" name="endereco_autor" placeholder="Rua, nº, bairro, cidade/UF, CEP">
+        </div>
+
+        <div class="botoes">
+            <button class="btn btn-primario" onclick="avancar(1, ['nome_autor','cpf_autor','email_autor','telefone','estado_civil','profissao','endereco_autor'])">Continuar</button>
+        </div>
+    </div>
+
+    <!-- ===== ETAPA 2: DEPENDENTE ===== -->
+    <div class="step" data-step="2">
+        <div class="step-label">Etapa 2 de 5</div>
+        <h2>Dados do dependente</h2>
+        <p class="instrucao">Informações sobre o filho(a) ou dependente com deficiência.</p>
+
+        <div class="campo">
+            <label>Nome completo do dependente</label>
+            <input type="text" name="nome_dependente" placeholder="Nome completo">
+        </div>
+
+        <div class="row-2">
+            <div class="campo">
+                <label>Data de nascimento</label>
+                <input type="date" name="nascimento_dependente">
+            </div>
+            <div class="campo">
+                <label>Grau de parentesco</label>
+                <select name="parentesco">
+                    <option value="">Selecione</option>
+                    <option value="filho(a)">Filho(a)</option>
+                    <option value="enteado(a)">Enteado(a)</option>
+                    <option value="neto(a)">Neto(a)</option>
+                    <option value="irmão/irmã">Irmão / Irmã</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="campo">
+            <label>Tipo de deficiência</label>
+            <select name="tipo_deficiencia" onchange="preencherCID(this)">
+                <option value="">Selecione</option>
+                <option value="Transtorno do Espectro Autista (TEA)"   data-cid10="F84.0"   data-cid11="6A02">Transtorno do Espectro Autista (TEA)</option>
+                <option value="Síndrome de Down"                        data-cid10="Q90.9"   data-cid11="LD40.0">Síndrome de Down</option>
+                <option value="Deficiência Intelectual"                 data-cid10="F70-F79" data-cid11="6A00">Deficiência Intelectual</option>
+                <option value="Paralisia Cerebral"                      data-cid10="G80.9"   data-cid11="8D20">Paralisia Cerebral</option>
+                <option value="TDAH (com comprometimento)"              data-cid10="F90"     data-cid11="6A05">TDAH (com comprometimento)</option>
+                <option value="Dislexia"                                data-cid10="F81.0"   data-cid11="6A03.0">Dislexia</option>
+                <option value="Deficiência Auditiva"                    data-cid10="H90.5"   data-cid11="AB52">Deficiência Auditiva</option>
+                <option value="Deficiência Visual"                      data-cid10="H54.0"   data-cid11="9D90">Deficiência Visual</option>
+                <option value="Deficiência Física"                      data-cid10=""        data-cid11="">Deficiência Física</option>
+                <option value="Outra"                                   data-cid10=""        data-cid11="">Outra (descreva abaixo)</option>
+            </select>
+        </div>
+
+        <div class="row-2">
+            <div class="campo">
+                <label>CID-10</label>
+                <input type="text" name="cid10" id="cid10Field" placeholder="Ex: F84.0">
+                <div class="ajuda">Preenchido automaticamente.</div>
+            </div>
+            <div class="campo">
+                <label>CID-11</label>
+                <input type="text" name="cid11" id="cid11Field" placeholder="Ex: 6A02">
+                <div class="ajuda">Preenchido automaticamente.</div>
+            </div>
+        </div>
+
+        <div class="row-2">
+            <div class="campo">
+                <label>Possui laudo médico?</label>
+                <select name="tem_laudo">
+                    <option value="">Selecione</option>
+                    <option value="sim_recente">Sim — atualizado (menos de 2 anos)</option>
+                    <option value="sim_antigo">Sim — mais antigo</option>
+                    <option value="vai_obter">Ainda vou obter</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="campo">
+            <label>Observações sobre o diagnóstico <span class="opc">(opcional)</span></label>
+            <textarea name="obs_diagnostico" placeholder="Detalhes adicionais sobre a condição do dependente que possam ser relevantes para a petição."></textarea>
+        </div>
+
+        <div class="botoes">
+            <button class="btn btn-secundario" onclick="irParaEtapa(1)">Voltar</button>
+            <button class="btn btn-primario" onclick="avancar(2, ['nome_dependente','nascimento_dependente','parentesco','tipo_deficiencia','cid10','tem_laudo'])">Continuar</button>
+        </div>
+    </div>
+
+    <!-- ===== ETAPA 3: ESCOLA E IR ===== -->
+    <div class="step" data-step="3">
+        <div class="step-label">Etapa 3 de 5</div>
+        <h2>Escola e declaração de IR</h2>
+        <p class="instrucao">Dados financeiros para cálculo da restituição.</p>
+
+        <div class="campo">
+            <label>Nome da escola</label>
+            <input type="text" name="nome_escola" placeholder="Nome completo da instituição de ensino">
+        </div>
+
+        <div class="campo">
+            <label>Sua faixa de Imposto de Renda</label>
+            <select name="aliquota_ir">
+                <option value="">Selecione</option>
+                <option value="0.075">7,5%</option>
+                <option value="0.15">15%</option>
+                <option value="0.225">22,5%</option>
+                <option value="0.275">27,5%</option>
+            </select>
+            <div class="ajuda">Se não souber, selecione 22,5% (média mais comum).</div>
+        </div>
+
+        <div class="secao">Gastos com a escola por ano</div>
+        <div class="ajuda" style="margin-bottom: 14px;">Informe o total pago (mensalidades + taxas) em cada exercício. Valores aproximados são aceitos — os documentos comprovarão os valores exatos.</div>
+
+        <div id="camposAnos"></div>
+
+        <div class="campo" style="margin-top: 8px;">
+            <label>Já enviou a declaração de IR deste ano (2025)?</label>
+            <div class="opcoes">
+                <div class="opcao" data-grupo="ja_declarou" data-valor="nao" onclick="selecionarOpcao(this)">
+                    <input type="radio" name="ja_declarou" value="nao">
+                    <div class="radio-circle"></div>
+                    Ainda não enviei — tenho prazo
+                </div>
+                <div class="opcao" data-grupo="ja_declarou" data-valor="sim" onclick="selecionarOpcao(this)">
+                    <input type="radio" name="ja_declarou" value="sim">
+                    <div class="radio-circle"></div>
+                    Já enviei
+                </div>
+            </div>
+        </div>
+
+        <div class="botoes">
+            <button class="btn btn-secundario" onclick="irParaEtapa(2)">Voltar</button>
+            <button class="btn btn-primario" onclick="avancar(3, ['nome_escola','aliquota_ir'])">Continuar</button>
+        </div>
+    </div>
+
+    <!-- ===== ETAPA 4: ENDEREÇO DE CONTRATAÇÃO ===== -->
+    <div class="step" data-step="4">
+        <div class="step-label">Etapa 4 de 5</div>
+        <h2>Informações complementares</h2>
+        <p class="instrucao">Últimas informações antes da lista de documentos.</p>
+
+        <div class="campo">
+            <label>Como ficou sabendo do escritório? <span class="opc">(opcional)</span></label>
+            <select name="origem">
+                <option value="">Selecione</option>
+                <option value="indicacao">Indicação de conhecido</option>
+                <option value="instagram">Instagram</option>
+                <option value="google">Google</option>
+                <option value="advogado">Indicação de advogado</option>
+                <option value="outro">Outro</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label>Alguma observação que queira adicionar? <span class="opc">(opcional)</span></label>
+            <textarea name="observacoes" placeholder="Situação específica, urgência, dúvidas etc."></textarea>
+        </div>
+
+        <div class="info-box">
+            Na próxima etapa você verá a lista de documentos que precisarão ser enviados por e-mail para análise da equipe jurídica.
+        </div>
+
+        <div class="botoes">
+            <button class="btn btn-secundario" onclick="irParaEtapa(3)">Voltar</button>
+            <button class="btn btn-primario" onclick="avancar(4, [])">Ver lista de documentos</button>
+        </div>
+    </div>
+
+    <!-- ===== ETAPA 5: DOCUMENTOS + CONFIRMAÇÃO ===== -->
+    <div class="step" data-step="5">
+        <div class="step-label">Etapa 5 de 5</div>
+        <h2>Documentos necessários</h2>
+        <p class="instrucao">
+            Envie os documentos abaixo por e-mail para nossa equipe. Você pode enviar de forma gradual —
+            iremos orientá-lo(a) em cada etapa.
+        </p>
+
+        <div class="email-destino">
+            Envie os documentos para
+            <strong>daniel@danielgomesadvocacia.com</strong>
+            Assunto: <em>Documentos — [seu nome]</em>
+        </div>
+
+        <div class="doc-grupo">
+            <div class="doc-grupo-titulo">1. Documentos pessoais</div>
+            <div class="doc-item">RG e CPF do titular (frente e verso)</div>
+            <div class="doc-item">Comprovante de residência (últimos 3 meses)</div>
+            <div class="doc-item">Certidão de nascimento do(a) dependente</div>
+        </div>
+
+        <div class="doc-grupo">
+            <div class="doc-grupo-titulo">2. Laudos e relatórios do dependente</div>
+            <div class="doc-item">Laudo médico com diagnóstico e CID-10 (neurologista, psiquiatra ou médico especialista)</div>
+            <div class="doc-item">Relatórios terapêuticos, se houver (fonoaudiologia, terapia ocupacional, ABA, psicologia etc.)</div>
+            <div class="doc-item">Avaliação ou relatório pedagógico emitido pela escola</div>
+        </div>
+
+        <div class="doc-grupo">
+            <div class="doc-grupo-titulo">3. Comprovantes da escola (últimos 5 anos)</div>
+            <div class="doc-item">Contrato de matrícula de cada ano letivo (2020, 2021, 2022, 2023, 2024)</div>
+            <div class="doc-item">Comprovantes de pagamento das mensalidades de cada ano — podem ser extratos bancários ou recibos</div>
+        </div>
+
+        <div class="doc-grupo">
+            <div class="doc-grupo-titulo">4. Declarações de Imposto de Renda</div>
+            <div class="doc-item">Cópia completa das Declarações de Ajuste Anual — IRPF dos anos de 2020, 2021, 2022, 2023 e 2024</div>
+            <div class="doc-item">Recibos de entrega (gerados pelo programa da Receita Federal)</div>
+        </div>
+
+        <div class="info-box">
+            Não se preocupe se não tiver todos os documentos agora. Nossa equipe entrará em contato
+            para orientá-lo(a) e definir prioridades.
+        </div>
+
+        <div class="botoes">
+            <button class="btn btn-secundario" onclick="irParaEtapa(4)">Voltar</button>
+            <button class="btn btn-primario" onclick="finalizar()">Confirmar cadastro</button>
+        </div>
+    </div>
+
+    <!-- ===== ETAPA 6: SUCESSO ===== -->
+    <div class="step" data-step="6">
+        <div style="text-align: center; padding: 12px 0 8px;">
+            <div class="sucesso-icone">&#10003;</div>
+            <h2 style="font-size: 20px; margin-bottom: 10px;">Cadastro concluído</h2>
+            <p style="font-size: 13px; color: var(--neutral-light); line-height: 1.8; max-width: 400px; margin: 0 auto 20px;">
+                Recebemos todas as suas informações. Nossa equipe analisará o caso e entrará
+                em contato em até <strong>24 horas úteis</strong>.
+            </p>
+        </div>
+
+        <div class="protocolo-box">
+            Protocolo de cadastro
+            <strong id="protocolo"></strong>
+        </div>
+
+        <div style="background: var(--neutral-bg); border-radius: 8px; padding: 16px 20px; font-size: 12px; line-height: 1.9; color: var(--neutral-text); margin-top: 16px;">
+            <strong style="display: block; margin-bottom: 6px; color: var(--primary-dark);">Próximos passos</strong>
+            1. Nossa equipe confirma o recebimento e revisa o caso<br>
+            2. Enviaremos orientações para o envio dos documentos<br>
+            3. Após análise documental, o contrato será encaminhado para assinatura<br>
+            4. Com o contrato assinado, a ação é protocolada na Justiça Federal
+        </div>
+    </div>
+
+</div><!-- /card -->
+
+<div style="text-align: center; margin-top: 20px; font-size: 11px; color: var(--neutral-light);">
+    Seus dados são protegidos pela LGPD e utilizados exclusivamente para a prestação dos serviços jurídicos contratados.
+</div>
+
+</div><!-- /container -->
+
+<script>
+// =======================================================
+// CONFIGURAÇÃO
+// =======================================================
+
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqW4tj-2cbJ5FTk-XMjeguPCIvLO8q0hMm6atbBaPun2rPrK1InsfcvZDuwuacUBCkFw/exec';
+
+const TOTAL_ETAPAS = 5;
+let etapaAtual = 1;
+let formData = {};
+
+const ANOS = [2025, 2024, 2023, 2022, 2021];
+
+// =======================================================
+// PROGRESSO
+// =======================================================
+
+function atualizarProgresso() {
+    const pct = Math.round((etapaAtual / TOTAL_ETAPAS) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + '%';
+    document.getElementById('stepLabel').textContent = `Etapa ${etapaAtual} de ${TOTAL_ETAPAS}`;
+}
+
+function irParaEtapa(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.querySelector(`[data-step="${n}"]`).classList.add('active');
+    etapaAtual = n;
+    atualizarProgresso();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// =======================================================
+// VALIDAÇÃO E AVANÇO
+// =======================================================
+
+function coletar(etapa) {
+    const el = document.querySelector(`[data-step="${etapa}"]`);
+    el.querySelectorAll('input, select, textarea').forEach(inp => {
+        if (inp.type === 'radio') {
+            if (inp.checked) formData[inp.name] = inp.value;
+        } else if (inp.name) {
+            formData[inp.name] = inp.value;
+        }
+    });
+    // radios manuais (opcao cards)
+    document.querySelectorAll('.opcao.selecionada').forEach(o => {
+        formData[o.dataset.grupo] = o.dataset.valor;
+    });
+}
+
+function avancar(etapaAtualN, obrigatorios) {
+    coletar(etapaAtualN);
+
+    let ok = true;
+    obrigatorios.forEach(nome => {
+        const el = document.querySelector(`[data-step="${etapaAtualN}"] [name="${nome}"]`);
+        if (el && !el.value.trim()) {
+            el.classList.add('erro');
+            ok = false;
+        } else if (el) {
+            el.classList.remove('erro');
+        }
+    });
+
+    if (!ok) {
+        alert('Preencha todos os campos obrigatórios antes de continuar.');
+        return;
+    }
+
+    irParaEtapa(etapaAtualN + 1);
+}
+
+// =======================================================
+// UTILITÁRIOS DE FORMULÁRIO
+// =======================================================
+
+function selecionarOpcao(el) {
+    const grupo = el.dataset.grupo;
+    document.querySelectorAll(`.opcao[data-grupo="${grupo}"]`).forEach(o => o.classList.remove('selecionada'));
+    el.classList.add('selecionada');
+    formData[grupo] = el.dataset.valor;
+}
+
+function preencherCID(select) {
+    const opt = select.options[select.selectedIndex];
+    document.getElementById('cid10Field').value = opt.dataset.cid10 || '';
+    document.getElementById('cid11Field').value = opt.dataset.cid11 || '';
+}
+
+function mascaraCPF(el) {
+    let v = el.value.replace(/\D/g,'');
+    v = v.replace(/(\d{3})(\d)/,'$1.$2');
+    v = v.replace(/(\d{3})(\d)/,'$1.$2');
+    v = v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+    el.value = v;
+}
+
+function mascaraTel(el) {
+    let v = el.value.replace(/\D/g,'');
+    v = v.replace(/^(\d{2})(\d)/,'($1) $2');
+    v = v.replace(/(\d{5})(\d{4})$/,'$1-$2');
+    el.value = v;
+}
+
+// =======================================================
+// GERAR CAMPOS DE ANOS DINAMICAMENTE
+// =======================================================
+
+function gerarCamposAnos() {
+    const container = document.getElementById('camposAnos');
+    container.innerHTML = ANOS.map(ano => `
+        <div class="row-2" style="margin-bottom: 12px;">
+            <div class="campo" style="margin: 0;">
+                <label>Total pago em ${ano}</label>
+                <div class="prefixo-wrap">
+                    <input type="number" name="gasto_${ano}" placeholder="0,00" step="0.01" min="0">
+                </div>
+            </div>
+            <div class="campo" style="margin: 0;">
+                <label>Declarou IR em ${ano}?</label>
+                <select name="declarou_${ano}">
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+        </div>
+    `).join('');
+}
+
+// =======================================================
+// FINALIZAR
+// =======================================================
+
+function finalizar() {
+    coletar(5);
+
+    const protocolo = 'DGA' + Date.now().toString().slice(-8);
+    formData._protocolo = protocolo;
+    formData._timestamp = new Date().toISOString();
+    formData.tipo = 'onboarding';
+
+    document.getElementById('protocolo').textContent = protocolo;
+
+    // Envia ao backend
+    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'COLE_AQUI_SUA_URL_DO_APPS_SCRIPT') {
+        fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        }).catch(() => {});
+    } else {
+        console.log('Modo demo. Dados:', formData);
+    }
+
+    irParaEtapa(6);
+}
+
+// =======================================================
+// INIT
+// =======================================================
+
+gerarCamposAnos();
+atualizarProgresso();
+</script>
+</body>
+</html>
